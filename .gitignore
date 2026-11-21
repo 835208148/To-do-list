@@ -1,0 +1,13 @@
+﻿__pycache__/
+*.py[cod]
+*.sqlite*
+*.db
+*.db-*
+*.csv
+preferences.json
+/build/
+/dist/
+/app.ico
+/luffy.png
+/penguin.png
+/Start-Todo.cmd
