@@ -1,0 +1,39 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+  <Package Name="To-do list" Manufacturer="To-do list" Version="1.0.0"
+           UpgradeCode="3B7BF723-8FE9-43A7-9209-5DD10851D136" Scope="perUser">
+    <MajorUpgrade DowngradeErrorMessage="A newer version of To-do list is already installed." />
+    <MediaTemplate EmbedCab="yes" />
+    <Icon Id="TodoIcon" SourceFile="one-piece.ico" />
+    <Property Id="ARPPRODUCTICON" Value="TodoIcon" />
+    <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
+    <UI>
+      <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg"
+               Order="99" Condition="NOT Installed AND NOT PATCH" />
+      <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg"
+               Order="99" />
+    </UI>
+
+    <StandardDirectory Id="LocalAppDataFolder">
+      <Directory Id="ProgramsFolder" Name="Programs">
+        <Directory Id="INSTALLFOLDER" Name="To-do list">
+          <Files Include="$(var.PayloadPath)\**">
+            <Exclude Files="$(var.PayloadPath)\To-do list.exe" />
+          </Files>
+          <Component Id="Application">
+            <File Id="TodoExe" Source="$(var.PayloadPath)\To-do list.exe" />
+          </Component>
+          <Component Id="StartMenuShortcut" Guid="{654E0976-BD8E-46C4-8FBC-258A481BAF63}">
+            <Shortcut Id="TodoStartMenu" Directory="ProgramMenuFolder"
+                      Name="To-do list" Target="[#TodoExe]" WorkingDirectory="INSTALLFOLDER"
+                      Icon="TodoIcon">
+              <ShortcutProperty Key="System.AppUserModel.ID" Value="ToDoList.Desktop" />
+            </Shortcut>
+            <RegistryValue Root="HKCU" Key="Software\To-do list" Name="Installed"
+                           Type="integer" Value="1" KeyPath="yes" />
+          </Component>
+        </Directory>
+      </Directory>
+    </StandardDirectory>
+  </Package>
+</Wix>
